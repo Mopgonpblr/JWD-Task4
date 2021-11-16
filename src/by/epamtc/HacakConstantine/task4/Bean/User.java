@@ -21,6 +21,9 @@ public class User {
     public void setId(int id) {
         this.id = id;
     }
+    public int getId() {
+       return id;
+    }
 
     public String getLogin() {
         return login;
@@ -71,7 +74,7 @@ public class User {
 
     @Override
     public String toString() {
-        return this.id + " " + this.login + " " + this.password + " " + this.name + " " + this.role;
+        return this.id + "|" + this.login + "|"+this.password+ "|" + this.name + "|" + this.role;
     }
 
     @Override

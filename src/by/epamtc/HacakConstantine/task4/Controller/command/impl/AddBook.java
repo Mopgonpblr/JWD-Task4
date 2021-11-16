@@ -20,13 +20,13 @@ public class AddBook implements Command {
         newBook.setAuthor(req[0]);
         newBook.setTitle(req[1]);
         newBook.setPageNumber(Integer.valueOf(req[2]));
+        newBook.setOwner("");
         try {
             ServiceFactory.getInstance().getLibraryService().addNewBook(newBook);
             response = "Book has been added to library";
         } catch (ServiceException | ArrayIndexOutOfBoundsException e) {
             throw new ControllerException("Can't add a book");
         }
-        //System.out.println(newBook.toString());
 
         return response;
     }

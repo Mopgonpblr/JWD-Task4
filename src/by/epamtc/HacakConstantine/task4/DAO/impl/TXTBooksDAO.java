@@ -11,15 +11,16 @@ import java.util.*;
 
 public class TXTBooksDAO implements BooksDAO {
 
+    final static String path = "Resources/Library.txt";
+
     @Override
     public void addBook(Book book) throws DAOException {
 
         try (PrintWriter out = new PrintWriter(
-                new BufferedWriter(new FileWriter(path())))) {
+                new BufferedWriter(new FileWriter(path,true)))) {
 
             out.write(book.toString());
             out.close();
-            System.out.println(BufferedInputFile.read(path()));
         } catch (IOException e) {
             throw new DAOException("File not found", e);
         }
@@ -28,11 +29,11 @@ public class TXTBooksDAO implements BooksDAO {
     @Override
     public void removeBook(int id) throws DAOException {
         try {
-            String inputStr = BufferedInputFile.read("Resources/Library.txt");
+            String inputStr = BufferedInputFile.read(path);
 
             inputStr = inputStr.replaceFirst(id + ".+\n", "");
 
-            FileOutputStream fileOut = new FileOutputStream("Resources/Library.txt");
+            FileOutputStream fileOut = new FileOutputStream(path);
             fileOut.write(inputStr.getBytes());
             fileOut.close();
             //System.out.println(BufferedInputFile.read(path()));
@@ -42,22 +43,24 @@ public class TXTBooksDAO implements BooksDAO {
     }
 
 
-    public ArrayList<Book> bookBase() throws DAOException {
-
+    public ArrayList<Book> getLibrary() throws DAOException {
         ArrayList<Book> library = new ArrayList<>();
-
         try {
             BufferedReader in = new BufferedReader(
-                    new FileReader(path()));
+                    new FileReader(path));
             String s;
             while ((s = in.readLine()) != null) {
                 String[] req = s.split("\\|");
                 Book newBook = new Book();
                 newBook.setId(Integer.valueOf(req[0]));
-                newBook.setAuthor(req[1]);
-                newBook.setTitle(req[2]);
+                newBook.setTitle(req[1]);
+                newBook.setAuthor(req[2]);
                 newBook.setPageNumber(Integer.valueOf(req[3]));
                 newBook.setBookStatus(BookStatus.valueOf(req[4]));
+                if (req.length>5)
+                    newBook.setOwner(req[5]);
+                else
+                    newBook.setOwner("");
                 library.add(newBook);
             }
 
@@ -72,10 +75,9 @@ public class TXTBooksDAO implements BooksDAO {
     @Override
     public void editBook() throws DAOException {
         try {
-            String inputStr = BufferedInputFile.read(path());
-            ArrayList<Book> library = bookBase();
-            for (int i = 0; i < library.size(); i++)
-                System.out.println(library.get(i).toString());
+            String inputStr = BufferedInputFile.read(path);
+            for (int i = 0; i < getLibrary().size(); i++)
+                System.out.println(getLibrary().get(i).toString());
                                       /*
             if (status == BookStatus.AVAILABLE)
                 inputStr = inputStr.replaceFirst(id+".+\n", "");
@@ -95,9 +97,8 @@ public class TXTBooksDAO implements BooksDAO {
 
     @Override
     public ArrayList<Book> find(String title) throws DAOException {
-            ArrayList<Book> library = bookBase();
             ArrayList<Book> result = new ArrayList<Book>();
-            for (Book book : library) {
+            for (Book book : getLibrary()) {
                 if (book.getTitle().equals(title))
                     result.add(book);
             }
@@ -105,7 +106,18 @@ public class TXTBooksDAO implements BooksDAO {
 
     }
 
-    public String path(){
-        return "Resources/Library.txt";
+     @Override
+      public void updateBook(Book book) throws DAOException {
+        try {
+            String inputStr = BufferedInputFile.read(path);
+
+            inputStr = inputStr.replaceFirst(book.getId() +"\\|"+book.getTitle()+ ".+\n", book.toString()+ "\n");
+
+            FileOutputStream fileOut = new FileOutputStream(path);
+            fileOut.write(inputStr.getBytes());
+            fileOut.close();
+        } catch (IOException e) {
+            throw new DAOException("File not found", e);
+        }
     }
 }

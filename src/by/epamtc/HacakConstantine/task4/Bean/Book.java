@@ -6,16 +6,16 @@ public class Book {
     private String author;
     private int pageNumber;
     private BookStatus bookStatus;
+    private String owner;
 
     public Book() {
     }
 
-    public Book(int id, String title, String author, int pageNumber, BookStatus bookStatus) {
+    public Book(int id, String title, String author, int pageNumber) {
         this.id = id;
         this.title = title;
         this.author = author;
         this.pageNumber = pageNumber;
-        this.bookStatus = bookStatus;
     }
 
     public int getId() {
@@ -75,7 +75,7 @@ public class Book {
 
     @Override
     public String toString() {
-        return this.id + "|" + this.title + "|" + this.author + "|" + this.pageNumber + "|" + this.bookStatus;
+        return this.id + "|" + this.title + "|" + this.author + "|" + this.pageNumber + "|" + this.bookStatus+ "|" + this.owner;
     }
 
     @Override
@@ -87,4 +87,11 @@ public class Book {
                 + (this.bookStatus == null ? 0 : this.bookStatus.hashCode()) + this.pageNumber;
     }
 
+    public String getOwner() {
+        return owner;
+    }
+
+    public void setOwner(String owner) {
+        this.owner = owner;
+    }
 }

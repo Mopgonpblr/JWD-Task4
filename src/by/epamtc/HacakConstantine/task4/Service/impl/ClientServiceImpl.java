@@ -1,15 +1,19 @@
 package by.epamtc.HacakConstantine.task4.Service.impl;
 
-import by.epamtc.HacakConstantine.task4.Bean.CurrentUser;
 import by.epamtc.HacakConstantine.task4.Bean.Role;
 import by.epamtc.HacakConstantine.task4.Bean.User;
 import by.epamtc.HacakConstantine.task4.DAO.DAOFactory;
+import by.epamtc.HacakConstantine.task4.DAO.UsersDAO;
 import by.epamtc.HacakConstantine.task4.DAO.exception.DAOException;
 import by.epamtc.HacakConstantine.task4.Service.ClientService;
+import by.epamtc.HacakConstantine.task4.Service.CurrentUser;
+import by.epamtc.HacakConstantine.task4.Service.ServiceFactory;
 import by.epamtc.HacakConstantine.task4.Service.exception.ServiceException;
 
 
 public class ClientServiceImpl implements ClientService {
+
+    final static UsersDAO ud = DAOFactory.getInstance().getTxtUsersDAO();
 
     @Override
     public void signIn(String login, String password) throws ServiceException{
@@ -21,7 +25,12 @@ public class ClientServiceImpl implements ClientService {
         }
 
         try {
-            DAOFactory.getInstance().getTxtUsersDAO().authorize(login,password);
+            for (User u:ud.getUserBase())
+                if (u.getLogin().equals(login))
+                    if (u.getPassword().equals(password))
+                        CurrentUser.getInstance().setUser(ud.authorize(login, password));
+                    else
+                        throw new ServiceException("Wrong password");
         }
         catch (DAOException e){
             throw new ServiceException("Authorization error");
@@ -30,12 +39,13 @@ public class ClientServiceImpl implements ClientService {
 
     }
     @Override
-    public void signOut(String login) throws ServiceException{
-        if (login == null | login.isEmpty()){
+    public void signOut() throws ServiceException{
+        if (CurrentUser.getInstance() == null){
             throw new ServiceException("Incorrect login");
         }
         try {
-            DAOFactory.getInstance().getTxtUsersDAO().signOut(login);
+            ud.signOut(CurrentUser.getInstance().getLogin());
+            CurrentUser.getInstance().setUser(new User());
         }
         catch (DAOException e){
             throw new ServiceException("Signing out error");
@@ -62,7 +72,12 @@ public class ClientServiceImpl implements ClientService {
         }
 
         try {
-            DAOFactory.getInstance().getTxtUsersDAO().register(user);
+            for (User u: ud.getUserBase())
+                if (u.getLogin().equals(user.getLogin()))
+                    throw new ServiceException("This login is taken. Please, choose another one");
+            user.setId(ud.getUserBase().size()+1);
+            ud.register(user);
+            CurrentUser.getInstance().setUser(user);
         }
         catch (DAOException e){
              throw new ServiceException("User can't be registered");
@@ -80,10 +95,12 @@ public class ClientServiceImpl implements ClientService {
         if (CurrentUser.getInstance().getRole()!= Role.ADMIN)
             throw new ServiceException("Insufficient permissions");
         try {
-            DAOFactory.getInstance().getTxtUsersDAO().delete(login);
+            for (User u: ud.getUserBase())
+                if (u.getLogin().equals(login))
+                    ud.delete(login);
         }
         catch (DAOException e){
-            throw new ServiceException("User can't be registered");
+            throw new ServiceException("User can't be deleted");
         }
     }
 }

@@ -1,4 +1,5 @@
-3|kappa|lul|69|AVAILABLE
-6|kappa|lul|69|AVAILABLE
-7|kappa|lul|69|AVAILABLE
-8|kappa|lul|69|AVAILABLE
+1|lul|kappa|69|TAKEN|USER
+2|kappa|lul|69|TAKEN|USER
+3|kappa|lul|69|AVAILABLE|
+4|kappa|lul|69|AVAILABLE|
+5|Mild Witness|J.J.Raw|340|TAKEN|USER
