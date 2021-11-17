@@ -6,6 +6,7 @@ import by.epamtc.HacakConstantine.task4.Service.ServiceFactory;
 import by.epamtc.HacakConstantine.task4.Service.exception.ServiceException;
 
 public class GiveBook implements Command {
+    final static String success = "Book has been given back to library";
     @Override
     public String execute(String request) throws ControllerException {
         String response = null;
@@ -13,7 +14,7 @@ public class GiveBook implements Command {
         try {
             int id=Integer.parseInt(request);
             ServiceFactory.getInstance().getLibraryService().giveBook(id);
-            response = "Book has been given back to library";
+            response = success;
         } catch (ServiceException | NumberFormatException e) {
             throw new ControllerException("Can't take a book, GiveBook class");
         }

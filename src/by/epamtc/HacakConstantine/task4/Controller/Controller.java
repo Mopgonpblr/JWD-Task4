@@ -18,7 +18,7 @@ public class Controller {
         try {
             response = new CommandProvider().getCommand(command).execute(request.substring(request.indexOf(paramDelimiter) + 1));
         } catch (ControllerException | NullPointerException e) {
-            throw new ControllerException("Controller class exception, " + command);
+            throw new ControllerException("Controller class exception, " + command, e);
         }
 
         return response;

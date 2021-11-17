@@ -10,11 +10,7 @@ public interface BooksDAO {
 
     void removeBook(int id) throws DAOException;
 
-    void editBook() throws DAOException;
-
     void updateBook(Book book) throws DAOException;
 
-    ArrayList<Book> find(String title) throws DAOException;
-
-    ArrayList<Book> getLibrary() throws DAOException;
+    ArrayList<Book> loadMedia() throws DAOException;
 }

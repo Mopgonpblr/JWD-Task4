@@ -1,6 +1,11 @@
 package by.epamtc.HacakConstantine.task4.Bean;
 
-public class User {
+import by.epamtc.HacakConstantine.task4.Bean.enums.Role;
+
+import java.io.Serializable;
+
+public class User implements Serializable {
+    private static final char paramDelimiter = '|';
     private int id;
     private String login;
     private String password;
@@ -74,7 +79,9 @@ public class User {
 
     @Override
     public String toString() {
-        return this.id + "|" + this.login + "|"+this.password+ "|" + this.name + "|" + this.role;
+        StringBuilder str = new StringBuilder();
+        str.append(this.id).append(paramDelimiter).append(this.login).append(paramDelimiter).append(this.name).append(paramDelimiter).append(this.role).append(paramDelimiter);
+        return str.toString();
     }
 
     @Override

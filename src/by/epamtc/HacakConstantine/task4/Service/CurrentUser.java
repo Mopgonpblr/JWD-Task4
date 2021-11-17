@@ -1,8 +1,8 @@
 package by.epamtc.HacakConstantine.task4.Service;
 
-import by.epamtc.HacakConstantine.task4.Bean.Role;
+import by.epamtc.HacakConstantine.task4.Bean.enums.Role;
 import by.epamtc.HacakConstantine.task4.Bean.User;
-import by.epamtc.HacakConstantine.task4.Bean.UserStatus;
+import by.epamtc.HacakConstantine.task4.Bean.enums.UserStatus;
 
 public class CurrentUser extends User {
     private static final CurrentUser instance = new CurrentUser();

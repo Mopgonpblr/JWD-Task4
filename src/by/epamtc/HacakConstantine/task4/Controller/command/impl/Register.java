@@ -1,7 +1,7 @@
 package by.epamtc.HacakConstantine.task4.Controller.command.impl;
 
-import by.epamtc.HacakConstantine.task4.Bean.Role;
-import by.epamtc.HacakConstantine.task4.Bean.UserStatus;
+import by.epamtc.HacakConstantine.task4.Bean.enums.Role;
+import by.epamtc.HacakConstantine.task4.Bean.enums.UserStatus;
 import by.epamtc.HacakConstantine.task4.Controller.command.Command;
 import by.epamtc.HacakConstantine.task4.Bean.User;
 import by.epamtc.HacakConstantine.task4.Controller.exception.ControllerException;
@@ -10,6 +10,8 @@ import by.epamtc.HacakConstantine.task4.Service.ServiceFactory;
 import by.epamtc.HacakConstantine.task4.Service.exception.ServiceException;
 
 public class Register implements Command {
+    final static String success = "User has been registered successfully";
+    @Override
     public String execute(String request) throws ControllerException {
         String response = null;
 
@@ -18,13 +20,13 @@ public class Register implements Command {
         newUser.setId(1);
         newUser.setLogin(req[0]);
         newUser.setPassword(req[1]);
-        newUser.setRole(Role.valueOf(req[2].toUpperCase()));
+        newUser.setRole(Role.USER);
         newUser.setName("");
         try {
             if (CurrentUser.getInstance().getStatus() == UserStatus.ONLINE)
                 ServiceFactory.getInstance().getClientService().signOut();
             ServiceFactory.getInstance().getClientService().register(newUser);
-            response = "User has been registered successfully";
+            response = success;
         } catch (ServiceException e) {
             throw new ControllerException("Can't register new user");
         }

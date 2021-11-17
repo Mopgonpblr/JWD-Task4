@@ -8,7 +8,6 @@ import java.util.ArrayList;
 
 public interface LibraryService {
     void addNewBook (Book book) throws ServiceException;
-    void editBook (Book book) throws ServiceException;
     void takeBook(int id) throws ServiceException;
     void giveBook(int id) throws ServiceException;
     void removeBook (int id) throws ServiceException;

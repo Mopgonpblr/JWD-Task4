@@ -1,12 +1,17 @@
 package by.epamtc.HacakConstantine.task4.Bean;
 
-public class Book {
+import by.epamtc.HacakConstantine.task4.Bean.enums.BookStatus;
+
+import java.io.Serializable;
+
+public class Book implements Serializable {
+    private static final char paramDelimiter = '|';
     private int id;
     private String title;
     private String author;
     private int pageNumber;
     private BookStatus bookStatus;
-    private String owner;
+    private String owner = "";
 
     public Book() {
     }
@@ -58,6 +63,14 @@ public class Book {
         this.bookStatus = bookStatus;
     }
 
+    public String getOwner() {
+        return owner;
+    }
+
+    public void setOwner(String owner) {
+        this.owner = owner;
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
@@ -70,16 +83,18 @@ public class Book {
         if (!this.author.equals(b.author)) return false;
         if (this.pageNumber != b.pageNumber) return false;
         if (!this.bookStatus.equals(b.bookStatus)) return false;
+        if (!this.owner.equals(b.owner)) return false;
         return true;
     }
 
     @Override
     public String toString() {
-        return this.id + "|" + this.title + "|" + this.author + "|" + this.pageNumber + "|" + this.bookStatus+ "|" + this.owner;
+        StringBuilder str = new StringBuilder();
+        str.append(this.id).append(paramDelimiter).append(this.title).append(paramDelimiter).append(this.author).append(paramDelimiter).append(this.pageNumber).append(paramDelimiter).append(this.bookStatus).append(paramDelimiter).append(this.owner).append("\n");
+        return str.toString();
     }
 
     @Override
-
     public int hashCode() {
         return (int) 31 * this.id
                 + (this.title == null ? 0 : this.title.hashCode())
@@ -87,11 +102,5 @@ public class Book {
                 + (this.bookStatus == null ? 0 : this.bookStatus.hashCode()) + this.pageNumber;
     }
 
-    public String getOwner() {
-        return owner;
-    }
 
-    public void setOwner(String owner) {
-        this.owner = owner;
-    }
 }

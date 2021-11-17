@@ -8,13 +8,11 @@ import by.epamtc.HacakConstantine.task4.Service.exception.ServiceException;
 public class Close implements Command {
     @Override
     public String execute(String request) throws ControllerException {
-        String response = null;
         try {
             System.exit(0);
         } catch (NumberFormatException e) {
             throw new ControllerException("Can't delete a user, DeleteUser class");
         }
-
-        return response;
+        return null;
     }
 }

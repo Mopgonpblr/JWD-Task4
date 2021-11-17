@@ -1,6 +1,6 @@
 package by.epamtc.HacakConstantine.task4.Controller.command.impl;
 
-import by.epamtc.HacakConstantine.task4.Bean.UserStatus;
+import by.epamtc.HacakConstantine.task4.Bean.enums.UserStatus;
 import by.epamtc.HacakConstantine.task4.Controller.command.Command;
 import by.epamtc.HacakConstantine.task4.Controller.exception.ControllerException;
 import by.epamtc.HacakConstantine.task4.Service.ClientService;
@@ -10,6 +10,7 @@ import by.epamtc.HacakConstantine.task4.Service.exception.ServiceException;
 
 
 public class SignIn implements Command {
+    final static String success = "Welcome ";
     @Override
     public String execute(String request) throws ControllerException{
 
@@ -27,9 +28,9 @@ public class SignIn implements Command {
                 clientService.signOut();
             clientService.signIn(login, password);
             if (CurrentUser.getInstance().getName().isEmpty())
-                response = "Welcome " + login;
+                response = success + login;
             else
-                response = "Welcome " + CurrentUser.getInstance().getName();
+                response = success + CurrentUser.getInstance().getName();
         } catch (ServiceException e) {
            throw new ControllerException( "Error. Can't log in");
         }

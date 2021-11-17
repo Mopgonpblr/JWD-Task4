@@ -12,11 +12,11 @@ public final class DAOFactory {
 
     public static DAOFactory getInstance() {return instance;}
 
-    public BooksDAO getTxtBooksDAO() {
+    public BooksDAO getBooksDAO() {
         return txtBooksDAO;
     }
 
-    public UsersDAO getTxtUsersDAO() {
+    public UsersDAO getUsersDAO() {
         return txtUsersDAO;
     }
 }

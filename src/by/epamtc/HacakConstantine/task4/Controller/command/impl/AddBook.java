@@ -1,7 +1,7 @@
 package by.epamtc.HacakConstantine.task4.Controller.command.impl;
 
 import by.epamtc.HacakConstantine.task4.Bean.Book;
-import by.epamtc.HacakConstantine.task4.Bean.BookStatus;
+import by.epamtc.HacakConstantine.task4.Bean.enums.BookStatus;
 import by.epamtc.HacakConstantine.task4.Controller.command.Command;
 import by.epamtc.HacakConstantine.task4.Controller.exception.ControllerException;
 import by.epamtc.HacakConstantine.task4.Service.ServiceFactory;
@@ -9,10 +9,10 @@ import by.epamtc.HacakConstantine.task4.Service.exception.ServiceException;
 
 
 public class AddBook implements Command {
+    final static String success = "Book has been added to library";
     @Override
     public String execute(String request) throws ControllerException {
         String response = null;
-
         String[] req = request.split("\\|");
         Book newBook = new Book();
         newBook.setId(1);
@@ -23,11 +23,10 @@ public class AddBook implements Command {
         newBook.setOwner("");
         try {
             ServiceFactory.getInstance().getLibraryService().addNewBook(newBook);
-            response = "Book has been added to library";
+            response =  success;
         } catch (ServiceException | ArrayIndexOutOfBoundsException e) {
             throw new ControllerException("Can't add a book");
         }
-
         return response;
     }
 }
